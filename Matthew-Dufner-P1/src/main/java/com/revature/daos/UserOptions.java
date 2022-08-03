@@ -9,12 +9,16 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
-public class UserDAO  implements DataSourceCRUD<User> {
+public class UserOptions implements DataSourceCRUD<User> {
 
     Connection connection;
 
-    public UserDAO(Connection connection){
+    public UserOptions(Connection connection){
         this.connection = connection;
+    }
+
+    public UserOptions() {
+        //TODO: Finish this after Connection Manager
     }
 
     @Override
@@ -63,6 +67,7 @@ public class UserDAO  implements DataSourceCRUD<User> {
     @Override
     public List<User> readAll() {
         List<User> userList = new LinkedList<>();
+
         try{
             String sql = "SELECT * FROM users";
             PreparedStatement pstmt = connection.prepareStatement(sql);
@@ -95,6 +100,7 @@ public class UserDAO  implements DataSourceCRUD<User> {
             pstmt.setString(1, user.getFirstName());
             pstmt.setString(2, user.getLastName());
             pstmt.setString(3, user.getUserPass());
+            pstmt.setString(4, user.isUserAdmin());
             pstmt.setString(5, user.getEmail());
 
 

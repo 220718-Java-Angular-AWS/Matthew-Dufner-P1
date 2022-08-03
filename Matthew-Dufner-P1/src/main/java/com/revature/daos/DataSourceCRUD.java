@@ -8,4 +8,5 @@ public interface DataSourceCRUD<T> {
     List<T> readAll();
     void update(T t);
     void delete(int id);
+
 }
