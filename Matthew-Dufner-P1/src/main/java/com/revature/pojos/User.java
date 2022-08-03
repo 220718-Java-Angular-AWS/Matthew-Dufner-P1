@@ -22,7 +22,7 @@ public class User {
         this.email = email;
     }
 
-    public User(String userName, String firstName, String lastName, String userPass, boolean userAdmin, String email){
+    public User(String userID, String firstName, String lastName, String userPass, boolean userAdmin, String email){
         this.userID = null;
         this.firstName = firstName;
         this.lastName = lastName;

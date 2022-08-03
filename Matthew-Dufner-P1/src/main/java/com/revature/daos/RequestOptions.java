@@ -2,6 +2,7 @@ package com.revature.daos;
 
 import com.revature.pojos.Requests;
 import com.revature.pojos.User;
+import com.revature.services.DatabaseServices;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,7 +11,7 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
-public class RequestOptions implements DataSourceCRUD<Requests> {
+public class RequestOptions implements DatabaseCRUD<Requests> {
     Connection connection;
 
     public RequestOptions(Connection connection){
@@ -18,18 +19,21 @@ public class RequestOptions implements DataSourceCRUD<Requests> {
     }
 
     public RequestOptions(){
-        //TODO: Finish this after Connection Manager
+        connection = DatabaseServices.getConnection();
     }
 
     @Override
     public void create(Requests request){
         try{
-            String sql = "INSERT INTO requests (amount_requested, reason_for_reimbursement, reimbursement_comments, approve_deny)";
+            String sql = "INSERT INTO requests (amount_requested, reason_for_reimbursement, reimbursement_comments, " +
+                    "approve_deny) VALUES (?, ?, ?, false)" ;
             PreparedStatement pstmt = connection.prepareStatement(sql);
             pstmt.setDouble(1, request.getAmtRequested());
             pstmt.setString(2, request.getRsnforReimburse());
             pstmt.setString(3, request.getCmtReimburse());
             pstmt.setBoolean(4, request.getApproveDeny());
+
+            pstmt.executeUpdate();
 
         } catch (SQLException e){
             e.printStackTrace();
@@ -96,7 +100,8 @@ public class RequestOptions implements DataSourceCRUD<Requests> {
     public void update(Requests requests) {
 
         try{
-            String sql = "UPDATE requests SET amount_requested = ?, reason_for_reimbursement = ?, reimbursement_comments = ?, approve_deny = ?";
+            String sql = "UPDATE requests SET amount_requested = ?, reason_for_reimbursement = ?, " +
+                    "reimbursement_comments = ?, approve_deny = ? WHERE request_id = ?";
             PreparedStatement pstmt = connection.prepareStatement(sql);
             pstmt.setDouble(1, requests.getAmtRequested());
             pstmt.setString(2, requests.getRsnforReimburse());

@@ -2,7 +2,7 @@ package com.revature.daos;
 
 import java.util.List;
 
-public interface DataSourceCRUD<T> {
+public interface DatabaseCRUD<T> {
     void create(T t);
     T read(int id);
     List<T> readAll();

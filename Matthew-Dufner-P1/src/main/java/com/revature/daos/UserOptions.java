@@ -1,6 +1,7 @@
 package com.revature.daos;
 
 import com.revature.pojos.User;
+import com.revature.services.DatabaseServices;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,7 +10,7 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
-public class UserOptions implements DataSourceCRUD<User> {
+public class UserOptions implements DatabaseCRUD<User> {
 
     Connection connection;
 
@@ -18,19 +19,19 @@ public class UserOptions implements DataSourceCRUD<User> {
     }
 
     public UserOptions() {
-        //TODO: Finish this after Connection Manager
+        connection = DatabaseServices.getConnection();
     }
 
     @Override
     public void create(User user){
         try{
-            String sql = "INSERT INTO users (first_name, last_name, user_pass, user_admin, email) VALUES (?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO users (first_name, last_name, user_pass, user_admin, email) " +
+                    "VALUES (?, ?, ?, false, ?)";
             PreparedStatement pstmt = connection.prepareStatement(sql);
             pstmt.setString(1, user.getFirstName());
             pstmt.setString(2, user.getLastName());
             pstmt.setString(3, user.getUserPass());
-            pstmt.setString(4, user.isUserAdmin());
-            pstmt.setString(5, user.getEmail());
+            pstmt.setString(4, user.getEmail());
 
             pstmt.executeUpdate();
 
@@ -95,12 +96,11 @@ public class UserOptions implements DataSourceCRUD<User> {
 
         try{
 
-            String sql = "UPDATE users SET first_name = ?, last_name = ?, user_pass = ?, user_admin = ?, email = ?, WHERE user_id = ?";
+            String sql = "UPDATE users SET first_name = ?, last_name = ?, user_pass = ?, user_admin = false, email = ?, WHERE user_id = ?";
             PreparedStatement pstmt = connection.prepareStatement(sql);
             pstmt.setString(1, user.getFirstName());
             pstmt.setString(2, user.getLastName());
             pstmt.setString(3, user.getUserPass());
-            pstmt.setString(4, user.isUserAdmin());
             pstmt.setString(5, user.getEmail());
 
 
@@ -123,4 +123,23 @@ public class UserOptions implements DataSourceCRUD<User> {
         }
 
     }
+
+    /*public Boolean checkAdmin(User user){
+
+
+
+        try{
+            String sql = "SELECT * FROM users WHERE user_id = ?";
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            pstmt.setObject(1, user);
+            ResultSet results = pstmt.executeQuery();
+
+            user.setUserAdmin(results.getBoolean("user_admin"));
+
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }*/
+
+
 }

@@ -8,10 +8,10 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-public class ConnectionManager {
+public class DatabaseServices {
     private static Connection connection;
 
-    private ConnectionManager(){
+    private DatabaseServices(){
 
     }
 
@@ -48,7 +48,6 @@ public class ConnectionManager {
             builder.append("&password=");
             builder.append(password);
             builder.append("&currentSchema=public");
-                    //www.something.com/something?key=value&key2=value2
 
             Class.forName(driver);
 
