@@ -1,8 +1,9 @@
 package com.revature.services;
 
 import com.revature.daos.UserOptions;
-import com.revature.pojos.Requests;
 import com.revature.pojos.User;
+
+import java.util.List;
 
 public class UserServices {
     private UserOptions UOpts;
@@ -12,18 +13,22 @@ public class UserServices {
     }
 
     public void saveUser(User user){
-
+        UOpts.create(user);
     }
 
-    public void saveRequests(Requests requests){
-
+    public User getUser(int id){
+        return  UOpts.read(id);
     }
 
-    public void searchUser(User user){
-
+    public List<User> getAllUsers(){
+        return UOpts.readAll();
     }
 
-    public void searchRequests(Requests requests){
+    public void updateUser(User user){
+        UOpts.update(user);
+    }
 
+    public void deleteUser(int id){
+        UOpts.delete(id);
     }
 }

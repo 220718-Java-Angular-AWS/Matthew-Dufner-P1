@@ -31,6 +31,23 @@ public class User {
         this.email = email;
     }
 
+    public User(String firstName, String lastName, String userPass, String email){
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.userPass = userPass;
+        this.email = email;
+    }
+
+    public User(Integer userID, String firstName, String lastName, String userPass, String email){
+        this.userID = userID;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.userPass = userPass;
+        this.email = email;
+
+    }
+
+
     public Integer getUserID() {
         return userID;
     }
@@ -63,10 +80,10 @@ public class User {
         this.userPass = userPass;
     }
 
-    public String isUserAdmin() {
-        String userAdString = String.valueOf(userAdmin);
+    public Boolean isUserAdmin() {
+        //String userAdString = userAdmin;
 
-        return userAdString;
+        return userAdmin;
     }
 
     public void setUserAdmin(boolean userAdmin) {

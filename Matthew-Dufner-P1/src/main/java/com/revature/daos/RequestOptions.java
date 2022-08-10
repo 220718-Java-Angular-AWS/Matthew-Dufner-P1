@@ -2,7 +2,7 @@ package com.revature.daos;
 
 import com.revature.pojos.Requests;
 import com.revature.pojos.User;
-import com.revature.services.DatabaseServices;
+import com.revature.services.ConnectionManager;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,27 +13,33 @@ import java.util.List;
 
 public class RequestOptions implements DatabaseCRUD<Requests> {
     Connection connection;
+    int id;
 
     public RequestOptions(Connection connection){
         this.connection = connection;
     }
 
     public RequestOptions(){
-        connection = DatabaseServices.getConnection();
+        connection = ConnectionManager.getConnection();
     }
 
     @Override
     public void create(Requests request){
+
         try{
-            String sql = "INSERT INTO requests (amount_requested, reason_for_reimbursement, reimbursement_comments, " +
-                    "approve_deny) VALUES (?, ?, ?, false)" ;
+            String sql = "INSERT INTO requests (title, request_date, amount_requested, reason_for_reimbursement, reimbursement_comments, " +
+                    "approve_deny) VALUES (?, ?, ?, ?, ?, false)" ;
             PreparedStatement pstmt = connection.prepareStatement(sql);
-            pstmt.setDouble(1, request.getAmtRequested());
-            pstmt.setString(2, request.getRsnforReimburse());
-            pstmt.setString(3, request.getCmtReimburse());
-            pstmt.setBoolean(4, request.getApproveDeny());
+
+            pstmt.setString(1, request.getTitle());
+            pstmt.setString(2, request.getRequestDate());
+            pstmt.setDouble(3, request.getAmtRequested());
+            pstmt.setString(4, request.getRsnforReimburse());
+            pstmt.setString(5, request.getCmtReimburse());
+            pstmt.setBoolean(6, request.isApproveDeny());
 
             pstmt.executeUpdate();
+
 
         } catch (SQLException e){
             e.printStackTrace();
@@ -56,6 +62,8 @@ public class RequestOptions implements DatabaseCRUD<Requests> {
             if(results.next()){
                 user.setUserID(results.getInt("user_id"));
                 requests.setRequestID(results.getInt("request_id"));
+                requests.setTitle(results.getString("title"));
+                requests.setRequestDate(results.getString("request_date"));
                 requests.setAmtRequested(results.getDouble("amount_requested"));
                 requests.setRsnforReimburse(results.getString("reason_for_reimbursement"));
                 requests.setCmtReimburse(results.getString("reimbursement_comments"));
@@ -86,6 +94,7 @@ public class RequestOptions implements DatabaseCRUD<Requests> {
                 requests.setRsnforReimburse(results.getString("reason_for_reimbursement"));
                 requests.setCmtReimburse(results.getString("reimbursement_comments"));
                 requests.setApproveDeny(results.getBoolean("approve_deny"));
+                requestList.add(requests);
             }
 
 
@@ -106,7 +115,7 @@ public class RequestOptions implements DatabaseCRUD<Requests> {
             pstmt.setDouble(1, requests.getAmtRequested());
             pstmt.setString(2, requests.getRsnforReimburse());
             pstmt.setString(3, requests.getCmtReimburse());
-            pstmt.setBoolean(4, requests.getApproveDeny());
+            pstmt.setBoolean(4, requests.isApproveDeny());
 
         }catch (SQLException e){
             e.printStackTrace();

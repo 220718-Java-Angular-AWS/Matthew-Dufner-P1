@@ -8,10 +8,10 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-public class DatabaseServices {
+public class ConnectionManager {
     private static Connection connection;
 
-    private DatabaseServices(){
+    private ConnectionManager(){
 
     }
 

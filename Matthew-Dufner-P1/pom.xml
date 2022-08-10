@@ -7,7 +7,7 @@
     <groupId>com.revature</groupId>
     <artifactId>Matthew-Dufner-P1</artifactId>
     <version>1.0</version>
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -21,6 +21,21 @@
             <artifactId>postgresql</artifactId>
             <version>42.4.0</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.13.3</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -32,7 +47,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.revature.Main</mainClass>
+                            <mainClass>Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
