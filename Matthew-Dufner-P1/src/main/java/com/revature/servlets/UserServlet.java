@@ -92,6 +92,7 @@ public class UserServlet extends HttpServlet {
             resp.getWriter().println("I'm dead and gone, dead and gone...");
         }
 
+        resp.getWriter().println("User updated.");
         resp.setContentType("Application/Json; Charset=UTF-8");
         resp.setStatus(200);
     }

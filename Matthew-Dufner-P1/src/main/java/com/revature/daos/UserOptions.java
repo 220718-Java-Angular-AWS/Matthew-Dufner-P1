@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
-public class UserOptions implements DatabaseCRUD<User> {
+public class UserOptions implements DatabaseCRUD<User>{
 
     Connection connection;
 

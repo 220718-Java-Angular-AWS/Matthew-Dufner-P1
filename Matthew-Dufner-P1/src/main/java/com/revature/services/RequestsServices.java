@@ -17,7 +17,7 @@ public class RequestsServices {
         ROpts.create(requests);
     }
 
-    public Requests searchRequests(int id){
+    public Requests getRequests(int id){
         return ROpts.read(id);
     }
 
