@@ -12,8 +12,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.List;
 public class UserServlet extends HttpServlet {
-     UserServices service;
-     ObjectMapper mapper;
+    UserServices service;
+    ObjectMapper mapper;
 
     @Override
     public void init() throws ServletException {
@@ -24,23 +24,25 @@ public class UserServlet extends HttpServlet {
     }
 
     @Override
-    public void destroy(){
+    public void destroy() {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
         String param = req.getParameter("user-id");
-        if(param == null){
+
+        if (param == null) {
             List<User> userList = service.getAllUsers();
             String json = mapper.writeValueAsString(userList);
             resp.getWriter().println(json);
-        } else{
-            Integer userId = Integer.parseInt(req.getParameter("user-id"));
-
-            User user = service.getUser(userId);
-            String json = mapper.writeValueAsString(user);
-            resp.getWriter().println(json);
         }
+        Integer userId = Integer.parseInt(req.getParameter("user-id"));
+
+        User user = service.getUser(userId);
+        String json = mapper.writeValueAsString(user);
+        resp.getWriter().println(json);
+
 
         resp.setContentType("Application/Json; Charset=UTF-8");
         resp.setStatus(200);

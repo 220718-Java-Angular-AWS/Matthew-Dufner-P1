@@ -11,13 +11,13 @@
     <h1>New User</h1>
     First Name: <input type="text" id="firstName"><br>
     Last Name: <input type="text" id="lastName"><br>
-    Password: <input type="password" id="userPass"><br>
     Email: <input type="email" id="email"><br>
-    <button type="button" onclick="getRequestsForUser()">Create New User</button>
+    Password: <input type="password" id="userPass"><br>
+    <button type="button" onclick="createNewUser()">Create New User</button>
 </body>
 
 <script>
-    async function getRequestsForUser() {
+    async function createNewUser() {
         
 
         let user = {
@@ -31,10 +31,6 @@
 
         let response = await fetch(url, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json;charset=utf-8'
-            },
-            body: JSON.stringify(user)
         });
 
         if(response.status == 200){

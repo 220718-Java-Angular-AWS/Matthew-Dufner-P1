@@ -3,6 +3,7 @@ package com.revature.daos;
 import com.revature.pojos.User;
 import com.revature.services.ConnectionManager;
 
+import java.nio.file.AccessDeniedException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -131,12 +132,14 @@ public class UserOptions implements DatabaseCRUD<User>{
 
     }
 
-    public int readEM(String email){
+    public User authenticate(String email, String userPass){
         User user = new User();
         try{
-            String sql = "SELECT * FROM users WHERE email = ?";
+            String sql = "SELECT * FROM users WHERE email = ? AND userPass = ?";
             PreparedStatement pstmt = connection.prepareStatement(sql);
             pstmt.setString(1, email);
+            pstmt.setString(2, userPass);
+
             ResultSet results = pstmt.executeQuery();
 
 
@@ -147,11 +150,15 @@ public class UserOptions implements DatabaseCRUD<User>{
                 user.setUserPass(results.getString("user_pass"));
                 user.setUserAdmin(results.getBoolean("user_admin"));
                 user.setEmail(results.getString("email"));
+            }else {
+                throw new AccessDeniedException("Access Denied!");
             }
         } catch (SQLException e){
             e.printStackTrace();
+        } catch (AccessDeniedException e) {
+            throw new RuntimeException(e);
         }
-        return user.getUserID();
+        return user;
     }
     /*public Boolean checkAdmin(User user){
 

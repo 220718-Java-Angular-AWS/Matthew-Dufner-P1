@@ -44,9 +44,12 @@ public class User {
         this.lastName = lastName;
         this.userPass = userPass;
         this.email = email;
-
     }
 
+    public User(String email, String userPass){
+        this.email = email;
+        this.userPass = userPass;
+    }
 
     public Integer getUserID() {
         return userID;

@@ -31,4 +31,7 @@ public class UserServices {
     public void deleteUser(int id){
         UOpts.delete(id);
     }
+    public User authenticate(String email, String userPass){
+        return UOpts.authenticate(email, userPass);
+    }
 }
