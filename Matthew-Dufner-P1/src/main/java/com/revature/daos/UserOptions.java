@@ -135,10 +135,39 @@ public class UserOptions implements DatabaseCRUD<User>{
     public User authenticate(String email, String userPass){
         User user = new User();
         try{
-            String sql = "SELECT * FROM users WHERE email = ? AND userPass = ?";
+            String sql = "SELECT * FROM users WHERE email = ? AND user_pass = ?";
             PreparedStatement pstmt = connection.prepareStatement(sql);
             pstmt.setString(1, email);
             pstmt.setString(2, userPass);
+
+            ResultSet results = pstmt.executeQuery();
+
+
+            if(results.next()){
+                user.setUserID(results.getInt("user_id"));
+                user.setFirstName(results.getString("first_name"));
+                user.setLastName(results.getString("last_name"));
+                user.setUserPass(results.getString("user_pass"));
+                user.setUserAdmin(results.getBoolean("user_admin"));
+                user.setEmail(results.getString("email"));
+            }else {
+                throw new AccessDeniedException("Access Denied!");
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        } catch (AccessDeniedException e) {
+            throw new RuntimeException(e);
+        }
+        return user;
+    }
+    public User getUpdate(String firstName, String lastName, String email){
+        User user = new User();
+        try{
+            String sql = "SELECT * FROM users WHERE first_name = ? AND lastName = ? AND email = ? ";
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            pstmt.setString(1, firstName);
+            pstmt.setString(2, lastName);
+            pstmt.setString(3, email);
 
             ResultSet results = pstmt.executeQuery();
 

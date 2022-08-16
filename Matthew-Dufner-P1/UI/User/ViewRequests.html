@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8"> <meta https-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale = 1.0">
+    
     <title>View Requests</title>
 </head>
 <body>
+    <button type="button" onclick="createNewRequest();">Create New Request</button>
     <div id = "requestList"></div>
 </body>
 <script> 
@@ -29,6 +31,6 @@
             htmlElement.innerHTML += "<p>Message: " + request.message + "</p>";
             htmlElement.innerHTML += "<p>Completed: " + request.completed + "</p><br><br>";
         }
-    })(1);
+    })
 </script>
 </html>

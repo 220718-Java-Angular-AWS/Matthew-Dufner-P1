@@ -8,7 +8,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
 import java.io.IOException;
 
 public class AuthServlet  extends HttpServlet {
@@ -20,29 +19,35 @@ public class AuthServlet  extends HttpServlet {
         this.mapper = new ObjectMapper();
         this.service = new UserServices();
     }
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
-        StringBuilder builder = new StringBuilder();
-        BufferedReader buffer = req.getReader();
-        while(buffer.ready()){
-            builder.append(buffer.readLine());
-        }
-        String json = builder.toString();
-
-        User authUser = mapper.readValue(json, User.class);
-        service.authenticate(authUser.getEmail(), authUser.getUserPass());
-        if(authUser!= null){
-            resp.setStatus(200);
-            resp.getWriter().write(mapper.writeValueAsString(authUser));
-            resp.addHeader("JWT", String.valueOf(authUser.getUserID()));
-        }else{
-            resp.setStatus(403);
-        }
-
-    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+        String email = req.getParameter("email");
+        String userPass = req.getParameter("user-pass");
 
+        User authUser = service.authenticate(email, userPass);
+
+        String json = mapper.writeValueAsString(authUser);
+
+        resp.getWriter().println(json);
+
+        resp.setContentType("Application/Json; Charset=UTF-8");
+        resp.setStatus(200);
+    }
+
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+        String firstName = req.getParameter("first-name");
+        String lastName = req.getParameter("last-name");
+        String email = req.getParameter("email");
+
+        User authUser = service.getUpdate(firstName, lastName, email);
+
+        String json = mapper.writeValueAsString(authUser);
+
+        resp.getWriter().println(json);
+
+        resp.setContentType("Application/Json; Charset=UTF-8");
+        resp.setStatus(200);
     }
 }

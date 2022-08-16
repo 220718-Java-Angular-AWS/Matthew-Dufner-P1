@@ -59,6 +59,8 @@ public class UserServlet extends HttpServlet {
 
         User newUser = mapper.readValue(json, User.class);
         service.saveUser(newUser);
+        resp.setContentType("Application/Json; Charset=UTF-8");
+        resp.setStatus(200);
     }
 
     @Override
@@ -81,6 +83,8 @@ public class UserServlet extends HttpServlet {
             service.updateUser(user);
             resp.getWriter().println("User updated.");
         }
+        resp.setContentType("Application/Json; Charset=UTF-8");
+        resp.setStatus(200);
     }
 
     @Override

@@ -34,4 +34,9 @@ public class UserServices {
     public User authenticate(String email, String userPass){
         return UOpts.authenticate(email, userPass);
     }
+
+    public User getUpdate(String firstName, String lastName, String email) {
+        return UOpts.getUpdate(firstName, lastName, email);
+    }
+
 }

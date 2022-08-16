@@ -54,6 +54,8 @@ public class RequestServlet extends HttpServlet {
 
         service.saveRequests(requests);
         resp.getWriter().println("Request created.");
+        resp.setContentType("Application/Json; Charset=UTF-8");
+        resp.setStatus(200);
     }
 
     @Override
@@ -76,6 +78,8 @@ public class RequestServlet extends HttpServlet {
             service.saveRequests(requests);
             resp.getWriter().println("Request updated.");
         }
+        resp.setContentType("Application/Json; Charset=UTF-8");
+        resp.setStatus(200);
     }
 
     @Override

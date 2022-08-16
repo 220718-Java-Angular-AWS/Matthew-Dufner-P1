@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update User</title>
+</head>
+
+<body>
+    <h1>Update User</h1>
+    First Name: <input type="text" placeholder="First Name" id="firstName"><br>
+    Last Name: <input type="text" placeholder="Last Name" id="lastName"><br>
+    Email: <input type="email" placeholder="Email" id="email"><br>
+    User access level:
+    <form action="" method="PUT">
+    <input type="radio" name="userAdmin" value= "true" /> Admin Access
+    <input type="radio" name="userAdmin" value= "false" checked/> User Access
+    </form>
+    <button type="button" onclick="getUser(), updateUser()">Update User</button>
+</body>
+
+<script>
+    async function getUser(){
+
+        firstName = document.getElementById("firstName").value,
+        lastName = document.getElementById("lastName").value,
+        email = document.getElementById("email").value
+        let url = 'http://localhost:8080/Matthew-Dufner-P1/auth?first-name=' + firstName + '&last-name=' + lastName + '&email=' + email;
+        let response = await fetch(url, {
+            method: 'GET',
+            headers:{
+                'Content-Type': 'application/json;charset=utf-8'
+            }
+            
+        })
+        
+        //set the user info in localStorage
+        if(response.status == 200){
+            let user = await response.json();
+            
+            if(localStorage.getItem == null){
+                document.getElementById("userLogin").addEventListener("click", function(){
+                window.localStorage.setItem('userId', user.userID);
+                localStorage.setItem('firstName', user.firstName);
+                localStorage.setItem('lastName', user.lastName);
+                localStorage.setItem('userAdmin', user.userAdmin);
+                localStorage.setItem('email', user.email);
+                });
+            }else{
+            localStorage.getItem('userId');
+            localStorage.getItem('firstName');
+            localStorage.getItem('lastName');
+            localStorage.getItem('userAdmin');
+            localStorage.getItem('email');
+            localStorage.getItem('userId', user.userID);
+            localStorage.getItem('firstName', user.firstName);
+            localStorage.getItem('lastName', user.lastName);
+            localStorage.getItem('userAdmin', user.userAdmin);
+            localStorage.getItem('email', user.email);
+            }
+            console.log("Hello, " + user.firstName + " " + user.lastName + " has been successfully loaded.");
+        }
+    }
+    async function updateUser() {
+         var userAdmin = "userAdmin"
+         if (document.getElementById("userAdmin") == true){
+            localStorage.setItem('userAdmin', true);
+         }else{
+            localStorage.setItem('userAdmin', false);
+         }
+        let user = {
+            userId: localStorage.getItem('userId').value,
+            firstName: localStorage.getItem('firstName').value,
+            lastName: localStorage.getItem('lastName').value,
+            userAdmin: localStorage.getItem("userAdmin").valueof,
+            email: localStorage.getItem("email").value
+        }
+
+
+        let url = 'http://localhost:8080/Matthew-Dufner-P1/users?user-id=' + user-id;
+
+        let response = await fetch(url, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json; charset=UTF-8'
+            },
+            body: JSON.stringify(user)
+        });
+
+        if(user.firstName.length == 0){
+            alert("Field \"First Name\" cannot be empty");
+            throw "Field cannot be empty!"
+        }
+        if(user.lastName.length == 0){
+            alert("Field \"Last Name\" cannot be empty");
+            throw "Field cannot be empty!"
+        }
+        if(user.userPass.length == 0){
+            alert("Field \"Email\" cannot be empty");
+            throw "Field cannot be empty!"
+        }
+        if(user.email.length == 0){
+            alert("Field \"Password\" cannot be empty");
+            throw "Field cannot be empty!"
+        }
+
+        //Put the object we just created into local storage here then redirect to the next page.
+
+        if(response.status == 200){
+            alert("Successfully updated the user.");
+            
+            localStorage.getItem('userId');
+            localStorage.setItem('userId', user.userId);
+            localStorage.getItem('firstName');
+            localStorage.setItem('firstName', user.firstName);
+            localStorage.getItem('lastName');
+            localStorage.setItem('lastName', user.lastName);
+            localStorage.getItem('userAdmin');
+            localStorage.setItem('userAdmin', user.userAdmin);
+            localStorage.getItem('email');
+            localStorage.setItem('email', user.email);
+            
+
+            location.href = "file:///C:/Users/mattd/Documents/Revature/Matthew-Dufner-P1/Matthew-Dufner-P1/UI/User/AdminOptions.html"
+        } else {
+            alert("Somerthing went wrong...");
+            location.href = "file:///C:/Users/mattd/Documents/Revature/Matthew-Dufner-P1/Matthew-Dufner-P1/UI/User/EditUsersAdmin.html"
+        }
+    }
+</script>
+
+</html>
