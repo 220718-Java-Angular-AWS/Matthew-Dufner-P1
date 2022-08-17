@@ -28,16 +28,16 @@ public class RequestServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
-            Integer requestId = Integer.parseInt(req.getParameter("request-id"));
+            Integer userID = Integer.parseInt(req.getParameter("user-id"));
 
-            List<Requests> requestsList = service.getAllRequests();
+            List<Requests> requestsList = service.getAllRequests(userID);
 
             String json = mapper.writeValueAsString(requestsList);
 
             resp.getWriter().println(json);
+
             resp.setContentType("Application/Json; Charset=UTF-8");
             resp.setStatus(200);
-            resp.getWriter().println("Request found.");
     }
 
     @Override

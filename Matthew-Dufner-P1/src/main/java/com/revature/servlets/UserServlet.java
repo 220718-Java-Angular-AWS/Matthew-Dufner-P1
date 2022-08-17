@@ -31,17 +31,17 @@ public class UserServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         String param = req.getParameter("user-id");
+        Integer userId = Integer.parseInt(req.getParameter("user-id"));
 
         if (param == null) {
             List<User> userList = service.getAllUsers();
             String json = mapper.writeValueAsString(userList);
             resp.getWriter().println(json);
+        }else {
+            User user = service.getUser(userId);
+            String json = mapper.writeValueAsString(user);
+            resp.getWriter().println(json);
         }
-        Integer userId = Integer.parseInt(req.getParameter("user-id"));
-
-        User user = service.getUser(userId);
-        String json = mapper.writeValueAsString(user);
-        resp.getWriter().println(json);
 
 
         resp.setContentType("Application/Json; Charset=UTF-8");
@@ -68,6 +68,7 @@ public class UserServlet extends HttpServlet {
         StringBuilder builder = new StringBuilder();
         BufferedReader buffer = req.getReader();
         String param = req.getParameter("user-id");
+
         if(param == null){
             resp.getWriter().println("User ID not found.");
         }else {
@@ -81,7 +82,6 @@ public class UserServlet extends HttpServlet {
 
             user = mapper.readValue(json, User.class);
             service.updateUser(user);
-            resp.getWriter().println("User updated.");
         }
         resp.setContentType("Application/Json; Charset=UTF-8");
         resp.setStatus(200);

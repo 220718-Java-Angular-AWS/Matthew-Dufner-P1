@@ -36,7 +36,7 @@ public class RequestOptions implements DatabaseCRUD<Requests> {
             pstmt.setDouble(3, request.getAmtRequested());
             pstmt.setString(4, request.getRsnforReimburse());
             pstmt.setString(5, request.getCmtReimburse());
-            pstmt.setBoolean(6, request.isApproveDeny());
+            pstmt.setString(6, request.getStatus());
 
             pstmt.executeUpdate();
 
@@ -62,12 +62,12 @@ public class RequestOptions implements DatabaseCRUD<Requests> {
             if(results.next()){
                 user.setUserID(results.getInt("user_id"));
                 requests.setRequestID(results.getInt("request_id"));
-                requests.setTitle(results.getString("title"));
-                requests.setRequestDate(results.getString("request_date"));
+                requests.setRequestID(results.getInt("title"));
+                requests.setRequestID(results.getInt("request_date"));
                 requests.setAmtRequested(results.getDouble("amount_requested"));
                 requests.setRsnforReimburse(results.getString("reason_for_reimbursement"));
                 requests.setCmtReimburse(results.getString("reimbursement_comments"));
-                requests.setApproveDeny(results.getBoolean("approve_deny"));
+                requests.setStatus(results.getString("status"));
             }
         }catch (SQLException e){
             e.printStackTrace();
@@ -82,18 +82,18 @@ public class RequestOptions implements DatabaseCRUD<Requests> {
         User user = new User();
 
         try{
-            String sql = "SELECT * FROM requests";
+            String sql = "SELECT * FROM requests WHERE user_id = ?";
             PreparedStatement pstmt = connection.prepareStatement(sql);
             ResultSet results = pstmt.executeQuery();
 
             while(results.next()){
-
-                user.setUserID(results.getInt("user_id"));
                 requests.setRequestID(results.getInt("request_id"));
+                requests.setRequestID(results.getInt("title"));
+                requests.setRequestID(results.getInt("request_date"));
                 requests.setAmtRequested(results.getDouble("amount_requested"));
                 requests.setRsnforReimburse(results.getString("reason_for_reimbursement"));
                 requests.setCmtReimburse(results.getString("reimbursement_comments"));
-                requests.setApproveDeny(results.getBoolean("approve_deny"));
+                requests.setStatus(results.getString("status"));;
                 requestList.add(requests);
             }
 
@@ -115,7 +115,7 @@ public class RequestOptions implements DatabaseCRUD<Requests> {
             pstmt.setDouble(1, requests.getAmtRequested());
             pstmt.setString(2, requests.getRsnforReimburse());
             pstmt.setString(3, requests.getCmtReimburse());
-            pstmt.setBoolean(4, requests.isApproveDeny());
+            pstmt.setString(4, requests.getStatus());
 
         }catch (SQLException e){
             e.printStackTrace();
@@ -135,5 +135,34 @@ public class RequestOptions implements DatabaseCRUD<Requests> {
         }
     }
 
+    @Override
+    public List<Requests> readAll(int userID) {
+        List<Requests> requestList = new LinkedList<>();
+        try {
+            String sql = "SELECT * FROM requests WHERE request_fk = ?";
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            pstmt.setInt(1, userID);
+
+            ResultSet results = pstmt.executeQuery();
+
+           while(results.next()){
+                Requests requests = new Requests();
+                requests.setTitle(results.getString("title"));
+                requests.setRequestDate(results.getString("request_date"));
+                requests.setAmtRequested(results.getDouble("amount_requested"));
+                requests.setRsnforReimburse(results.getString("reason_for_reimbursement"));
+                requests.setCmtReimburse(results.getString("reimbursement_comments"));
+                requests.setStatus(results.getString("status"));
+                requestList.add(requests);
+            }
+
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+
+
+        return requestList;
+    }
 
 }

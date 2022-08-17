@@ -11,7 +11,9 @@
     <div id = "requestList"></div>
 </body>
 <script> 
-    (async function getRequestsForUser(userId){
+    async function getRequestsForUser(){
+        userId = localStorage.getItem("userId");
+
         let url = 'http://localhost:8080/Matthew-Dufner-P1/requests?user-id=' + userId;
         let response = await fetch(url, { 
             method: 'GET',
@@ -29,8 +31,9 @@
 
             htmlElement.innerHTML += "<h4>Title: " + request.title + "</h4>";
             htmlElement.innerHTML += "<p>Message: " + request.message + "</p>";
-            htmlElement.innerHTML += "<p>Completed: " + request.completed + "</p><br><br>";
+            htmlElement.innerHTML += "<p>Completed: " + request.completed + "</p>";
+            htmlElement.innerHTML += "<p>Status: " + request.status + "</p><br><br>";
         }
-    })
+}
 </script>
 </html>

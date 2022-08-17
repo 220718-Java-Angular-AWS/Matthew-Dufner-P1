@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,75 +13,104 @@
     First Name: <input type="text" placeholder="First Name" id="firstName"><br>
     Last Name: <input type="text" placeholder="Last Name" id="lastName"><br>
     Email: <input type="email" placeholder="Email" id="email"><br>
+    Updated First Name: <input type="text" placeholder="Updated First Name" id="uFirstName"><br>
+    Updated Last Name: <input type="text" placeholder="Updated Last Name" id="uLastName"><br>
+    Updated Email: <input type="email" placeholder="Updated Email" id="uEmail"><br>
+    Updated Password: <input type="password" placeholder="Updated Password" id="uUserPass"><br>
     User access level:
-    <form action="" method="PUT">
-    <input type="radio" name="userAdmin" value= "true" /> Admin Access
-    <input type="radio" name="userAdmin" value= "false" checked/> User Access
-    </form>
-    <button type="button" onclick="getUser(), updateUser()">Update User</button>
+    <input type="radio" name="badbutton " id="userAdmin" value="true" /> Admin Access
+    <input type="radio" name="badbutton " id="userAdmin" booleanValue="false" checked /> User Access
+    <button type="button" onclick="updateUser()">Update User</button>
 </body>
 
 <script>
-    async function getUser(){
+    async function updateUser() {
 
-        firstName = document.getElementById("firstName").value,
-        lastName = document.getElementById("lastName").value,
-        email = document.getElementById("email").value
-        let url = 'http://localhost:8080/Matthew-Dufner-P1/auth?first-name=' + firstName + '&last-name=' + lastName + '&email=' + email;
+        firstName = document.getElementById("firstName").value;
+        lastName = document.getElementById("lastName").value;
+        email = document.getElementById("email").value;
+
+        if(firstName.length == 0){
+            alert("Field \"First Name\" cannot be empty");
+            throw "Field cannot be empty!"
+        }
+        if(lastName.length == 0){
+            alert("Field \"Last Name\" cannot be empty");
+            throw "Field cannot be empty!"
+        }
+        if(email.length == 0){
+            alert("Field \"Email\" cannot be empty");
+            throw "Field cannot be empty!"
+        }
+
+        let url = 'http://localhost:8080/Matthew-Dufner-P1/update?first-name=' + firstName + '&last-name=' + lastName + '&email=' + email;
+
         let response = await fetch(url, {
             method: 'GET',
-            headers:{
+            headers: {
                 'Content-Type': 'application/json;charset=utf-8'
             }
-            
         })
-        
-        //set the user info in localStorage
-        if(response.status == 200){
+
+        console.log(document.getElementById('userAdmin').value)
+
+        //set the user info in local storage for the short term persistency
+        if (response.status == 200) {
             let user = await response.json();
-            
-            if(localStorage.getItem == null){
-                document.getElementById("userLogin").addEventListener("click", function(){
-                window.localStorage.setItem('userId', user.userID);
-                localStorage.setItem('firstName', user.firstName);
-                localStorage.setItem('lastName', user.lastName);
-                localStorage.setItem('userAdmin', user.userAdmin);
-                localStorage.setItem('email', user.email);
-                });
-            }else{
-            localStorage.getItem('userId');
-            localStorage.getItem('firstName');
-            localStorage.getItem('lastName');
-            localStorage.getItem('userAdmin');
-            localStorage.getItem('email');
-            localStorage.getItem('userId', user.userID);
-            localStorage.getItem('firstName', user.firstName);
-            localStorage.getItem('lastName', user.lastName);
-            localStorage.getItem('userAdmin', user.userAdmin);
-            localStorage.getItem('email', user.email);
-            }
-            console.log("Hello, " + user.firstName + " " + user.lastName + " has been successfully loaded.");
+
+            localStorage.setItem('userID', user.userID);
+            localStorage.setItem('firstName', user.firstName);
+            localStorage.setItem('lastName', user.lastName);
+            localStorage.setItem('userAdmin', user.userAdmin);
+            localStorage.setItem('userPass', user.userPass);
+            localStorage.setItem('email', user.email);
+            console.log(localStorage.getItem('userID'));
+            console.log(localStorage.getItem('firstName'));
+            console.log(localStorage.getItem('lastName'));
+            console.log(localStorage.getItem('userAdmin'));
+            console.log(localStorage.getItem('userPass'));
+            console.log(localStorage.getItem('email'));
         }
-    }
-    async function updateUser() {
-         var userAdmin = "userAdmin"
-         if (document.getElementById("userAdmin") == true){
-            localStorage.setItem('userAdmin', true);
-         }else{
-            localStorage.setItem('userAdmin', false);
-         }
-        let user = {
-            userId: localStorage.getItem('userId').value,
-            firstName: localStorage.getItem('firstName').value,
-            lastName: localStorage.getItem('lastName').value,
-            userAdmin: localStorage.getItem("userAdmin").valueof,
-            email: localStorage.getItem("email").value
+        const user = new Object();
+        console.log(user.userID = localStorage.getItem('userID'));
+
+        user.userID = localStorage.getItem('userID');
+        if (document.getElementById('uFirstName').value == ''){
+            user.firstName = document.getElementById("firstName").value;
+        }else{
+            user.firstName = document.getElementById("uFirstName").value;
         }
 
+        if (document.getElementById('uLastName').value == ''){
+            user.lastName = document.getElementById("lastName").value;
+        }else{
+            user.lastName = document.getElementById("uLastName").value;
+        }
 
-        let url = 'http://localhost:8080/Matthew-Dufner-P1/users?user-id=' + user-id;
+        if(document.getElementById('userAdmin').value == "true"){
+            user.userAdmin = true;
+        }else{
+            user.userAdmin = false;
+        }
 
-        let response = await fetch(url, {
+        if (document.getElementById('uUserPass').value == ''){
+            user.userPass = localStorage.getItem('userPass');
+        }else{
+            user.userPass = document.getElementById("uUserPass").value;
+        }
+
+        if (document.getElementById('uEmail').value == ''){
+            user.email = document.getElementById('email').value;
+        }else{
+            user.email = document.getElementById("uEmail").value;
+        }
+
+        console.log(user);
+        console.log("Hello, " + user.firstName + " " + user.lastName + " has been successfully loaded.");
+
+        url = 'http://localhost:8080/Matthew-Dufner-P1/users?user-id=' + user.userID;
+
+        response = await fetch(url, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json; charset=UTF-8'
@@ -88,44 +118,29 @@
             body: JSON.stringify(user)
         });
 
-        if(user.firstName.length == 0){
-            alert("Field \"First Name\" cannot be empty");
-            throw "Field cannot be empty!"
-        }
-        if(user.lastName.length == 0){
-            alert("Field \"Last Name\" cannot be empty");
-            throw "Field cannot be empty!"
-        }
-        if(user.userPass.length == 0){
-            alert("Field \"Email\" cannot be empty");
-            throw "Field cannot be empty!"
-        }
-        if(user.email.length == 0){
-            alert("Field \"Password\" cannot be empty");
-            throw "Field cannot be empty!"
-        }
-
         //Put the object we just created into local storage here then redirect to the next page.
 
-        if(response.status == 200){
+        if (response.status == 200) {
             alert("Successfully updated the user.");
-            
-            localStorage.getItem('userId');
-            localStorage.setItem('userId', user.userId);
-            localStorage.getItem('firstName');
-            localStorage.setItem('firstName', user.firstName);
-            localStorage.getItem('lastName');
-            localStorage.setItem('lastName', user.lastName);
-            localStorage.getItem('userAdmin');
-            localStorage.setItem('userAdmin', user.userAdmin);
-            localStorage.getItem('email');
-            localStorage.setItem('email', user.email);
-            
 
-            location.href = "file:///C:/Users/mattd/Documents/Revature/Matthew-Dufner-P1/Matthew-Dufner-P1/UI/User/AdminOptions.html"
+            localStorage.getItem('userId');
+            localStorage.setItem('userId', updateUser.userId);
+            localStorage.getItem('firstName');
+            localStorage.setItem('firstName', updateUser.firstName);
+            localStorage.getItem('lastName');
+            localStorage.setItem('lastName', updateUser.lastName);
+            localStorage.getItem('userAdmin');
+            localStorage.setItem('userAdmin', updateUser.userAdmin);
+            localStorage.getItem('userPass');
+            localStorage.setItem('userPass', updateUser.userPass);
+            localStorage.getItem('email');
+            localStorage.setItem('email', updateUser.email);
+
+
+            location.href = "file:///C:/Users/mattd/Documents/Revature/Matthew-Dufner-P1/Matthew-Dufner-P1/UI/Admin/AdminOptions.html"
         } else {
             alert("Somerthing went wrong...");
-            location.href = "file:///C:/Users/mattd/Documents/Revature/Matthew-Dufner-P1/Matthew-Dufner-P1/UI/User/EditUsersAdmin.html"
+            location.href = "file:///C:/Users/mattd/Documents/Revature/Matthew-Dufner-P1/Matthew-Dufner-P1/UI/Admin/EditUsersAdmin.html"
         }
     }
 </script>

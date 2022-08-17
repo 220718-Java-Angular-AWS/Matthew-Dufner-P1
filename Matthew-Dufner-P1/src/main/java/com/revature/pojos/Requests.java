@@ -7,29 +7,29 @@ public class Requests extends User{
     private Double amtRequested;
     private String rsnforReimburse;
     private String cmtReimburse;
-    private Boolean approveDeny;
+    private String status;
 
     public Requests() {
     }
 
-    public Requests(Integer userID, String title, String requestDate, Integer requestId, Double amtRequested, String rsnforReimburse, String cmtReimburse, Boolean approveDeny) {
+    public Requests(Integer userID, String title, String requestDate, Integer requestId, Double amtRequested, String rsnforReimburse, String cmtReimburse, String status) {
         this.requestID = requestId;
         this.title = title;
         this.requestDate = requestDate;
         this.amtRequested = amtRequested;
         this.rsnforReimburse = rsnforReimburse;
         this.cmtReimburse = cmtReimburse;
-        this.approveDeny = approveDeny;
+        this.status = status;
     }
 
-    public Requests(String userID, String title, String requestDate, String requestId, Double amtRequested, String rsnforReimburse, String cmtReimburse, Boolean approveDeny) {
+    public Requests(String userID, String title, String requestDate, String requestId, Double amtRequested, String rsnforReimburse, String cmtReimburse, String status) {
         this.requestID = null;
         this.title = title;
         this.requestDate = requestDate;
         this.amtRequested = amtRequested;
         this.rsnforReimburse = rsnforReimburse;
         this.cmtReimburse = cmtReimburse;
-        this.approveDeny = approveDeny;
+        this.status = status;
     }
 
     public Requests(String title, Double amtRequested, String rsnforReimburse){
@@ -91,11 +91,11 @@ public class Requests extends User{
         this.cmtReimburse = cmtReimburse;
     }
 
-    public Boolean isApproveDeny() {
-        return approveDeny;
+    public String getStatus() {
+        return status;
     }
 
-    public void setApproveDeny(Boolean approveDeny) {
-        this.approveDeny = approveDeny;
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

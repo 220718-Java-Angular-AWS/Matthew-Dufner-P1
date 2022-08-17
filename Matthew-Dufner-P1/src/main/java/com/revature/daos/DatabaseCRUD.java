@@ -8,5 +8,5 @@ public interface DatabaseCRUD<T> {
     List<T> readAll();
     void update(T t);
     void delete(int id);
-
+    List<T> readAll(int id);
 }

@@ -162,12 +162,41 @@ public class UserOptions implements DatabaseCRUD<User>{
     }
     public User getUpdate(String firstName, String lastName, String email){
         User user = new User();
+
         try{
-            String sql = "SELECT * FROM users WHERE first_name = ? AND lastName = ? AND email = ? ";
+            String sql = "SELECT * FROM users WHERE first_name = ? AND last_name = ? AND email = ? ";
             PreparedStatement pstmt = connection.prepareStatement(sql);
             pstmt.setString(1, firstName);
             pstmt.setString(2, lastName);
             pstmt.setString(3, email);
+
+            ResultSet results = pstmt.executeQuery();
+
+
+            if(results.next()){
+                user.setUserID(results.getInt("user_id"));
+                user.setFirstName(results.getString("first_name"));
+                user.setLastName(results.getString("last_name"));
+                user.setUserPass(results.getString("user_pass"));
+                user.setUserAdmin(results.getBoolean("user_admin"));
+                user.setEmail(results.getString("email"));
+            }else {
+                throw new AccessDeniedException("Access Denied!");
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        } catch (AccessDeniedException e) {
+            throw new RuntimeException(e);
+        }
+        return user;
+    }
+    public User getUserEm(String email){
+        User user = new User();
+
+        try{
+            String sql = "SELECT * FROM users WHERE email = ?";
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            pstmt.setString(1, email);
 
             ResultSet results = pstmt.executeQuery();
 
@@ -205,6 +234,31 @@ public class UserOptions implements DatabaseCRUD<User>{
             e.printStackTrace();
         }
     }*/
+    @Override
+    public List<User> readAll(int userID) {
+        List<User> userList = new LinkedList<>();
 
+        try{
+            String sql = "SELECT * FROM users WHERE user_id = ?";
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            ResultSet results = pstmt.executeQuery();
+
+            while(results.next()){
+                User user = new User();
+                user.setUserID(results.getInt("user_id"));
+                user.setFirstName(results.getString("first_name"));
+                user.setLastName(results.getString("last_name"));
+                user.setUserPass(results.getString("user_pass"));
+                user.setUserAdmin(results.getBoolean("user_admin"));
+                user.setEmail(results.getString("email"));
+                userList.add(user);
+            }
+
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+
+        return userList;
+    }
 
 }

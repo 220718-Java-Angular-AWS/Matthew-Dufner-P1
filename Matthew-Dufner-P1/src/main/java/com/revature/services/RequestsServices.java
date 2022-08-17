@@ -21,8 +21,8 @@ public class RequestsServices {
         return ROpts.read(id);
     }
 
-    public List<Requests> getAllRequests(){
-        return ROpts.readAll();
+    public List<Requests> getAllRequests(int id){
+        return ROpts.readAll(id);
     }
 
     public void deleteRequests(int id){

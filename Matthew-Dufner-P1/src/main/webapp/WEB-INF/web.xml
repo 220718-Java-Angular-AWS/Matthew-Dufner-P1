@@ -55,10 +55,31 @@
         <url-pattern>/auth</url-pattern>
     </servlet-mapping>
 
-
     <servlet>
         <servlet-name>AuthServlet</servlet-name>
         <servlet-class>com.revature.servlets.AuthServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>UpdateUserServlet</servlet-name>
+        <url-pattern>/update</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>UpdateUserServlet</servlet-name>
+        <servlet-class>com.revature.servlets.UpdateUserServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>EmailRequestServlet</servlet-name>
+        <url-pattern>/emailLookup</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>EmailRequestServlet</servlet-name>
+        <servlet-class>com.revature.servlets.EmailRequestServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
 
