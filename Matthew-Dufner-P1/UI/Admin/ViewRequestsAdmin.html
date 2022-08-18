@@ -73,7 +73,7 @@
         })
         let user = await response.json();
 
-        url = 'http://localhost:8080/Matthew-Dufner-P1/requests?user-id=' + user.userID;
+        url = 'http://localhost:8080/Matthew-Dufner-P1/allrequest?user-id=' + user.userID;
         response = await fetch(url, {
             method: 'GET',
             headers: {
@@ -151,7 +151,7 @@
         })
         let user = await response.json();
 
-        url = 'http://localhost:8080/Matthew-Dufner-P1/requests?user-id=' + user.userID;
+        url = 'http://localhost:8080/Matthew-Dufner-P1/allrequest?user-id=' + user.userID;
         response = await fetch(url, {
             method: 'GET',
             headers: {

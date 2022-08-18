@@ -24,20 +24,21 @@
     <br>
     <table style="width: 90%" id="RequestByID"></table><br><br>
     <table style="width: 90%" id="requests"></table>
+    <div id="AdminMenu"></div>
 </body>
 <script>
     (async function adminMenu(){
         if (localStorage.getItem("userAdmin") == "true") {
-            let darDiv = document.getElementById("viewUsersAdmin");
+            let darDiv = document.getElementById("AdminMenu");
             let btn = document.createElement("button");
 
-            darDiv.innerHTML += "<button type='button' id='viewUsersAdmin' onclick='Deny()'>Deny</button>";
-            darDiv.innerHTML += "<button type='button' id='viewUsersAdmin' onclick='Approve()'>Approve</button>";
+            darDiv.innerHTML += "<button type='button' id='Approve' onclick='Approve()'>Approve</button>";
+            darDiv.innerHTML += "<button type='button' id='Deny' onclick='Deny()'>Deny</button>";
         }
     })();
     async function getRequestsForUser() {
         let userID = localStorage.getItem("userID");
-        let url = 'http://localhost:8080/Matthew-Dufner-P1/requests?user-id=' + userID;
+        let url = 'http://localhost:8080/Matthew-Dufner-P1/allrequest?user-id=' + userID;
         let response = await fetch(url, {
             method: 'GET',
             headers: {
@@ -76,7 +77,6 @@
     }
 
     async function viewRequestByID() {
-        let userID = localStorage.getItem("userID");
         let requestID = document.getElementById("requestID").value;
 
         let url = 'http://localhost:8080/Matthew-Dufner-P1/requests?request-id=' + requestID;
@@ -86,9 +86,11 @@
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
             }
+
         });
 
         let request = response.json();
+        console.log(request);
         let htmlElement = document.getElementById('RequestByID');
 
         htmlElement.style.border = "2px solid white";
@@ -131,10 +133,9 @@
     }
 
     async function Approve(){
-        let userID = localStorage.getItem("userID");
         let requestID = document.getElementById("requestID").value;
 
-        let url = 'http://localhost:8080/Matthew-Dufner-P1/requests?user-id=' + userID + "&request-id=" + requestID;
+        let url = 'http://localhost:8080/Matthew-Dufner-P1/requests?request-id=' + requestID;
 
         let response = await fetch(url, {
             method: 'GET',
@@ -147,7 +148,7 @@
 
         request.status = "Approved";
         
-        url = 'http://localhost:8080/Matthew-Dufner-P1/requests?user-id=' + userID + "&request-id=" + requestID + "&status=" + request.status;
+        url = 'http://localhost:8080/Matthew-Dufner-P1/requests?request-id=' + requestID;
 
         response = await fetch(url, {
             method: 'PUT',

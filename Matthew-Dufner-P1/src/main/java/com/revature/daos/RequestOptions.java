@@ -84,10 +84,9 @@ public class RequestOptions implements DatabaseCRUD<Requests> {
 
 
             if(results.next()){
-                user.setUserID(results.getInt("user_id"));
                 requests.setRequestID(results.getInt("request_id"));
-                requests.setRequestID(results.getInt("title"));
-                requests.setRequestID(results.getInt("request_date"));
+                requests.setTitle(results.getString("title"));
+                requests.setRequestDate(results.getString("request_date"));
                 requests.setAmtRequested(results.getDouble("amount_requested"));
                 requests.setRsnforReimburse(results.getString("reason_for_reimbursement"));
                 requests.setCmtReimburse(results.getString("reimbursement_comments"));
@@ -116,8 +115,8 @@ public class RequestOptions implements DatabaseCRUD<Requests> {
             if(results.next()){
                 user.setUserID(results.getInt("user_id"));
                 requests.setRequestID(results.getInt("request_id"));
-                requests.setRequestID(results.getInt("title"));
-                requests.setRequestID(results.getInt("request_date"));
+                requests.setTitle(results.getString("title"));
+                requests.setRequestDate(results.getString("request_date"));
                 requests.setAmtRequested(results.getDouble("amount_requested"));
                 requests.setRsnforReimburse(results.getString("reason_for_reimbursement"));
                 requests.setCmtReimburse(results.getString("reimbursement_comments"));
@@ -142,8 +141,8 @@ public class RequestOptions implements DatabaseCRUD<Requests> {
 
             while(results.next()){
                 requests.setRequestID(results.getInt("request_id"));
-                requests.setRequestID(results.getInt("title"));
-                requests.setRequestID(results.getInt("request_date"));
+                requests.setTitle(results.getString("title"));
+                requests.setRequestDate(results.getString("request_date"));
                 requests.setAmtRequested(results.getDouble("amount_requested"));
                 requests.setRsnforReimburse(results.getString("reason_for_reimbursement"));
                 requests.setCmtReimburse(results.getString("reimbursement_comments"));

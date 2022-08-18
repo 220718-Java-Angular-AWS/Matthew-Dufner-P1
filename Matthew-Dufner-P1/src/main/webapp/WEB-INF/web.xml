@@ -83,6 +83,17 @@
         <load-on-startup>1</load-on-startup>
     </servlet>
 
+    <servlet-mapping>
+        <servlet-name>AllRequestsServlet</servlet-name>
+        <url-pattern>/allrequest</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AllRequestsServlet</servlet-name>
+        <servlet-class>com.revature.servlets.AllRequestsServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
     <error-page>
         <exception-type>com.revature.exceptions.AccessDeniedException</exception-type>
         <location>/errorHandler</location>

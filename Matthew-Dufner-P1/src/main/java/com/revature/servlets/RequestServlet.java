@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.List;
 
 public class RequestServlet extends HttpServlet {
     private RequestsServices service;
@@ -28,24 +27,11 @@ public class RequestServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
-            String paramUID = req.getParameter("user-id");
-            String paramRID = req.getParameter("request-id");
-            Integer userID = Integer.parseInt(req.getParameter("user-id"));
             Integer requestID = Integer.parseInt(req.getParameter("request-id"));
 
-            if(paramRID != null && paramUID != null){
-                List<Requests> requestsList = service.getAllRequests(userID);
-
-                String json = mapper.writeValueAsString(requestsList);
-
-                resp.getWriter().println(json);
-            }else{
-                Requests requests = service.getRequests(requestID);
-                String json = mapper.writeValueAsString(requests);
-                resp.getWriter().println(json);
-            }
-
-
+            Requests requests = service.getRequests(requestID);
+            String json = mapper.writeValueAsString(requests);
+            resp.getWriter().println(json);
 
             resp.setContentType("Application/Json; Charset=UTF-8");
             resp.setStatus(200);
