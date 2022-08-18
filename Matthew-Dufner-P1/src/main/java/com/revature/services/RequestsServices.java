@@ -20,6 +20,9 @@ public class RequestsServices {
     public void saveRequests(Requests requests){
         ROpts.create(requests);
     }
+    public void updateRequests(Requests requests){
+        ROpts.update(requests);
+    }
 
     public Requests getRequests(int requestID,int userID){
         return ROpts.read(requestID, userID);

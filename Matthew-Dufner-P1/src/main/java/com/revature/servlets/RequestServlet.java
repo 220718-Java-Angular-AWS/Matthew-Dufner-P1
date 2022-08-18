@@ -33,14 +33,14 @@ public class RequestServlet extends HttpServlet {
             Integer userID = Integer.parseInt(req.getParameter("user-id"));
             Integer requestID = Integer.parseInt(req.getParameter("request-id"));
 
-            if(paramRID == null || paramRID == ""){
+            if(paramRID != null && paramUID != null){
                 List<Requests> requestsList = service.getAllRequests(userID);
 
                 String json = mapper.writeValueAsString(requestsList);
 
                 resp.getWriter().println(json);
             }else{
-                Requests requests = service.getRequests(userID, requestID);
+                Requests requests = service.getRequests(requestID);
                 String json = mapper.writeValueAsString(requests);
                 resp.getWriter().println(json);
             }
@@ -75,12 +75,19 @@ public class RequestServlet extends HttpServlet {
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
         StringBuilder builder = new StringBuilder();
         BufferedReader buffer = req.getReader();
-        String param = req.getParameter("request-id");
-        if(param == null){
+        String param = req.getParameter("status");
+        String paramRID = req.getParameter("request-id");
+        String paramUID = req.getParameter("user-id");
+
+
+        if(paramRID == null){
             resp.getWriter().println("Request ID not found.");
+        } else if (paramUID == null){
+            resp.getWriter().println("User ID not found.");
         }else {
+            Integer userID = Integer.parseInt(req.getParameter("user-id"));
             Integer requestId = Integer.parseInt(req.getParameter("request-id"));
-            Requests requests = service.getRequests(requestId);
+            Requests requests = service.getRequests(requestId, userID);
 
             while (buffer.ready()) {
                 builder.append(buffer.readLine());
@@ -88,7 +95,7 @@ public class RequestServlet extends HttpServlet {
             String json = builder.toString();
 
             requests = mapper.readValue(json, Requests.class);
-            service.saveRequests(requests);
+            service.updateRequests(requests);
             resp.getWriter().println("Request updated.");
         }
         resp.setContentType("Application/Json; Charset=UTF-8");

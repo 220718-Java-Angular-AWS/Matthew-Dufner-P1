@@ -47,6 +47,7 @@
     <button type="button" onclick="getRequestsForUser()">Get Requests</button>
     <button type="button" onclick="Approve()" id="Aprv"> Approve</button>
     <button id="Deny" onclick="Deny()" id="Deny"> Deny</button>
+    <button type = "button" onclick="userOptions()" id="Main">User Options</button>
     <div id="dropdown" class="dropdown">
         <div id='listItems'>
         </div>
@@ -177,7 +178,9 @@
         }
         
     }
-
+    async function userOptions(){
+        location.href = "file:///C:/Users/mattd/Documents/Revature/Matthew-Dufner-P1/Matthew-Dufner-P1/UI/User/UserOptions.html"
+    }
 </script>
 
 </html>

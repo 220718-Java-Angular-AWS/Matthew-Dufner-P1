@@ -24,19 +24,19 @@ public class RequestOptions implements DatabaseCRUD<Requests> {
     }
 
     @Override
-    public void create(Requests request){
+    public void create(Requests requests){
 
         try{
             String sql = "INSERT INTO requests (title, request_date, amount_requested, reason_for_reimbursement, reimbursement_comments, " +
                     "approve_deny) VALUES (?, ?, ?, ?, ?, false)" ;
             PreparedStatement pstmt = connection.prepareStatement(sql);
 
-            pstmt.setString(1, request.getTitle());
-            pstmt.setString(2, request.getRequestDate());
-            pstmt.setDouble(3, request.getAmtRequested());
-            pstmt.setString(4, request.getRsnforReimburse());
-            pstmt.setString(5, request.getCmtReimburse());
-            pstmt.setString(6, request.getStatus());
+            pstmt.setString(1, requests.getTitle());
+            pstmt.setString(2, requests.getRequestDate());
+            pstmt.setDouble(3, requests.getAmtRequested());
+            pstmt.setString(4, requests.getRsnforReimburse());
+            pstmt.setString(5, requests.getCmtReimburse());
+            pstmt.setString(6, requests.getStatus());
 
             pstmt.executeUpdate();
 
@@ -163,13 +163,16 @@ public class RequestOptions implements DatabaseCRUD<Requests> {
     public void update(Requests requests) {
 
         try{
-            String sql = "UPDATE requests SET amount_requested = ?, reason_for_reimbursement = ?, " +
-                    "reimbursement_comments = ?, approve_deny = ? WHERE request_id = ?";
+            String sql = "UPDATE requests SET title = ?, request_date = ?, amount_requested = ?, reason_for_reimbursement = ?, " +
+                    "reimbursement_comments = ?, status = ? WHERE request_id = ?";
             PreparedStatement pstmt = connection.prepareStatement(sql);
-            pstmt.setDouble(1, requests.getAmtRequested());
-            pstmt.setString(2, requests.getRsnforReimburse());
-            pstmt.setString(3, requests.getCmtReimburse());
-            pstmt.setString(4, requests.getStatus());
+            pstmt.setString(1, requests.getTitle());
+            pstmt.setString(2, requests.getRequestDate());
+            pstmt.setDouble(3, requests.getAmtRequested());
+            pstmt.setString(4, requests.getRsnforReimburse());
+            pstmt.setString(5, requests.getCmtReimburse());
+            pstmt.setString(6, requests.getStatus());
+            pstmt.setInt(7, requests.getRequestID());
 
         }catch (SQLException e){
             e.printStackTrace();

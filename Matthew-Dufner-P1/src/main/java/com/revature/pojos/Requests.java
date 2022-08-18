@@ -13,7 +13,7 @@ public class Requests extends User{
     }
 
     public Requests(Integer requestID, String title, String requestDate, Integer requestId, Double amtRequested, String rsnforReimburse, String cmtReimburse, String status) {
-        this.requestID = requestId;
+        this.requestID = requestID;
         this.title = title;
         this.requestDate = requestDate;
         this.amtRequested = amtRequested;
@@ -45,7 +45,7 @@ public class Requests extends User{
         this.cmtReimburse = cmtReimburse;
     }
 
-    public Integer getRequestID(Requests read){
+    public int getRequestID(){
         return requestID;
     }
 

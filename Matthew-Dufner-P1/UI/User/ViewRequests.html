@@ -26,6 +26,15 @@
     <table style="width: 90%" id="requests"></table>
 </body>
 <script>
+    (async function adminMenu(){
+        if (localStorage.getItem("userAdmin") == "true") {
+            let darDiv = document.getElementById("viewUsersAdmin");
+            let btn = document.createElement("button");
+
+            darDiv.innerHTML += "<button type='button' id='viewUsersAdmin' onclick='Deny()'>Deny</button>";
+            darDiv.innerHTML += "<button type='button' id='viewUsersAdmin' onclick='Approve()'>Approve</button>";
+        }
+    })();
     async function getRequestsForUser() {
         let userID = localStorage.getItem("userID");
         let url = 'http://localhost:8080/Matthew-Dufner-P1/requests?user-id=' + userID;
@@ -70,7 +79,7 @@
         let userID = localStorage.getItem("userID");
         let requestID = document.getElementById("requestID").value;
 
-        let url = 'http://localhost:8080/Matthew-Dufner-P1/requests?user-id=' + userID + "&request-id=" + requestID;
+        let url = 'http://localhost:8080/Matthew-Dufner-P1/requests?request-id=' + requestID;
 
         let response = await fetch(url, {
             method: 'GET',
@@ -121,6 +130,36 @@
         request.innerHTML = "";
     }
 
+    async function Approve(){
+        let userID = localStorage.getItem("userID");
+        let requestID = document.getElementById("requestID").value;
+
+        let url = 'http://localhost:8080/Matthew-Dufner-P1/requests?user-id=' + userID + "&request-id=" + requestID;
+
+        let response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            }
+        });
+
+        let request = response.json();
+
+        request.status = "Approved";
+        
+        url = 'http://localhost:8080/Matthew-Dufner-P1/requests?user-id=' + userID + "&request-id=" + requestID + "&status=" + request.status;
+
+        response = await fetch(url, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify(request)
+        });
+    }
+    async function Deny(){
+
+    }
     async function updateRequest() {
         location.href = "file:///C:/Users/mattd/Documents/Revature/Matthew-Dufner-P1/Matthew-Dufner-P1/UI/User/UpdateRequest.html";
     }
