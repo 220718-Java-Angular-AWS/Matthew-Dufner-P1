@@ -21,6 +21,7 @@
     <input type="radio" name="badbutton " id="userAdmin" value="true" /> Admin Access
     <input type="radio" name="badbutton " id="userAdmin" booleanValue="false" checked /> User Access
     <button type="button" onclick="updateUser()">Update User</button>
+    <button type="button" onclick="userOptions()">User Options</button>
 </body>
 
 <script>
@@ -142,6 +143,10 @@
             alert("Somerthing went wrong...");
             location.href = "file:///C:/Users/mattd/Documents/Revature/Matthew-Dufner-P1/Matthew-Dufner-P1/UI/Admin/EditUsersAdmin.html"
         }
+    }
+    
+    async function userOptions(){
+        location.href = "file:///C:/Users/mattd/Documents/Revature/Matthew-Dufner-P1/Matthew-Dufner-P1/UI/User/UserOptions.html"
     }
 </script>
 

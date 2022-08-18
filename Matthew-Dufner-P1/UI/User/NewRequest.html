@@ -20,15 +20,13 @@
         <label>Reason for Reimbursement: </label>
         <input type="text" placeholder="Reason for Reimbursement" id="rsnforReimburse" required><br>
         <label>Comments: </label>
-        <textarea type="text" placeholder="Comments..." rows="6" cols="100" id="cmtReimburse" required> </textarea></textarea><br>
+        <textarea type="text" placeholder="Comments..." rows="6" cols="100" id="cmtReimburse"> </textarea></textarea><br>
         <button type="button" onclick="createNewrequest()">Create Request</button>
     </form>
 </body>
 
 <script>
     async function createNewrequest() {
-
-
         let request = {
             title: document.getElementById("title").value,
             requestDate: document.getElementById("requestDate").value,
@@ -54,7 +52,7 @@
             throw "Field cannot be empty!"
         }
 
-        userID = sessionStorage.getItem("userID");
+        userID = localStorage.getItem("userID");
 
         let url = "http://localhost:8080/Matthew-Dufner-P1/requests?user-id=" + userID;
 
@@ -66,8 +64,6 @@
             body: JSON.stringify(request)
         });
 
-        //Pt the object we just created into local storage here then redirect to the next page.
-
         if (response.status == 200) {
             
             location.href = "file:///C:/Users/mattd/Documents/Revature/Matthew-Dufner-P1/Matthew-Dufner-P1/UI/User/ViewRequests.html"
@@ -77,5 +73,4 @@
         }
     }
 </script>
-
 </html>

@@ -12,7 +12,7 @@ public class Requests extends User{
     public Requests() {
     }
 
-    public Requests(Integer userID, String title, String requestDate, Integer requestId, Double amtRequested, String rsnforReimburse, String cmtReimburse, String status) {
+    public Requests(Integer requestID, String title, String requestDate, Integer requestId, Double amtRequested, String rsnforReimburse, String cmtReimburse, String status) {
         this.requestID = requestId;
         this.title = title;
         this.requestDate = requestDate;
@@ -22,7 +22,7 @@ public class Requests extends User{
         this.status = status;
     }
 
-    public Requests(String userID, String title, String requestDate, String requestId, Double amtRequested, String rsnforReimburse, String cmtReimburse, String status) {
+    public Requests(String requestID, String title, String requestDate, String requestId, Double amtRequested, String rsnforReimburse, String cmtReimburse, String status) {
         this.requestID = null;
         this.title = title;
         this.requestDate = requestDate;

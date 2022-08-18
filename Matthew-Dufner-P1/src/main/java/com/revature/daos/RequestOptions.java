@@ -51,7 +51,7 @@ public class RequestOptions implements DatabaseCRUD<Requests> {
 
         try{
             String sql = "INSERT INTO requests (request_fk, title, request_date, amount_requested, reason_for_reimbursement, reimbursement_comments, " +
-                    "approve_deny) VALUES (?, ?, ?, ?, ?, ?, Pending)" ;
+                    "status) VALUES (?, ?, ?, ?, ?, ?, ?)" ;
             PreparedStatement pstmt = connection.prepareStatement(sql);
 
             pstmt.setInt(1, userID);
@@ -60,7 +60,7 @@ public class RequestOptions implements DatabaseCRUD<Requests> {
             pstmt.setDouble(4, request.getAmtRequested());
             pstmt.setString(5, request.getRsnforReimburse());
             pstmt.setString(6, request.getCmtReimburse());
-            pstmt.setString(7, request.getStatus());
+            pstmt.setString(7, "Pending");
 
             pstmt.executeUpdate();
 
@@ -105,7 +105,7 @@ public class RequestOptions implements DatabaseCRUD<Requests> {
         User user = new User();
 
         try{
-            String sql = "SELECT * FROM requests WHERE request_id = ? AND request_pk = ?";
+            String sql = "SELECT * FROM requests WHERE request_id = ? AND request_fk = ?";
             PreparedStatement pstmt = connection.prepareStatement(sql);
             pstmt.setInt(1, requestID);
             pstmt.setInt(2, userID);

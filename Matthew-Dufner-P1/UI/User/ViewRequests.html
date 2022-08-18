@@ -22,12 +22,12 @@
         <button type="button" onclick="clearAllSelection()">Clear All Selections</button>
     </form>
     <br>
-    <table style="width 90%" id="RequestByID"></table><br><br>
-    <table style="width 90%" id="requests"></table>
+    <table style="width: 90%" id="RequestByID"></table><br><br>
+    <table style="width: 90%" id="requests"></table>
 </body>
 <script>
     async function getRequestsForUser() {
-        let userID = sessionStorage.getItem("userID");
+        let userID = localStorage.getItem("userID");
         let url = 'http://localhost:8080/Matthew-Dufner-P1/requests?user-id=' + userID;
         let response = await fetch(url, {
             method: 'GET',
@@ -49,6 +49,8 @@
             "<th style='width: 10%; border: 1px solid black'>Reason for Reimbursement</th></tr>" +
             "<th style='border: 1px solid black'>Comments</th></tr>" +
             "<th style='width: 10%; border: 3px solid black'>Status</th></tr>";
+        
+        console.log(array);
 
         for (let i = 0; i < array.length; i++) {
             let request = array[i];
@@ -65,7 +67,7 @@
     }
 
     async function viewRequestByID() {
-        let userID = sessionStorage.getItem("userID");
+        let userID = localStorage.getItem("userID");
         let requestID = document.getElementById("requestID").value;
 
         let url = 'http://localhost:8080/Matthew-Dufner-P1/requests?user-id=' + userID + "&request-id=" + requestID;
@@ -77,8 +79,7 @@
             }
         });
 
-        let array = response.json();
-
+        let request = response.json();
         let htmlElement = document.getElementById('RequestByID');
 
         htmlElement.style.border = "2px solid white";
@@ -91,7 +92,7 @@
             "<th style='width: 10%; border: 1px solid black'>Amount Requested</th>" +
             "<th style='width: 10%; border: 1px solid black'>Reason for Reimbursement</th></tr>" +
             "<th style='border: 1px solid black'>Comments</th></tr>" +
-            "<th style='width: 10%; border: 3px solid black'>Status</th></tr>";
+            "<th style='width: 10%; border: 3px solid black'>Status</th></tr>"
 
         if(request.title != null){
             htmlElement.innerHTML += "<tr><td style='width: 5%; border: 1px solid black'>" + userID +
@@ -102,7 +103,7 @@
                 "</td><td style='width: 10%; border: 1px solid black'>" + request.rsnforReimburse +
                 "</td><td style='border: 1px solid black'>" + request.cmtReimburse +
                 "</td><td style='width: 10%; border: 3px solid black'>" + request.status +
-                "</td></tr>";
+                "</td></tr>"
         }else{
             alert("Request does not exist!");
         }
