@@ -1,21 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8"> <meta https-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="UTF-8">
+    <meta https-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale = 1.0">
-    
+
     <title>View Requests</title>
 </head>
-<body>
-    <button type="button" onclick="createNewRequest();">Create New Request</button>
-    <div id = "requestList"></div>
-</body>
-<script> 
-    async function getRequestsForUser(){
-        userId = localStorage.getItem("userId");
 
-        let url = 'http://localhost:8080/Matthew-Dufner-P1/requests?user-id=' + userId;
-        let response = await fetch(url, { 
+<body>
+    <button type="button" onclick="userOptions()"> User Options Menu</button>
+    <form onsubmit="return false">
+        <h1>View Request</h1>
+        <label>By Request ID: </label>
+        <input type="number" placeholder="Enter Request ID" id="requestID" required><br>
+        <button type="submit" id="viewRequest" onclick="viewRequestByID(); clearSelection()">Search Request</button>
+        <button type="button" onclick="getRequestsForUser(); clearAllSelection()">View All Requests</button>
+        <button type="button" onclick="updateRequest()">Update Request</button>
+        <button type="button" onclick="clearSelection()">Clear Selection</button>
+        <button type="button" onclick="clearAllSelection()">Clear All Selections</button>
+    </form>
+    <br>
+    <table style="width 90%" id="RequestByID"></table><br><br>
+    <table style="width 90%" id="requests"></table>
+</body>
+<script>
+    async function getRequestsForUser() {
+        let userID = sessionStorage.getItem("userID");
+        let url = 'http://localhost:8080/Matthew-Dufner-P1/requests?user-id=' + userID;
+        let response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8'
+            }
+        });
+
+        let array = await response.json();
+        let htmlElement = document.getElementById("requests");
+        htmlElement.style.border = "2px solid white";
+        htmlElement.style.background = "#e200f2"
+
+        htmlElement.innerHTML = "<tr><th style='width: 5%; border: 1px solid black'>User ID: </th>" +
+            "<th style='width: 5%; border: 1px solid black'>Request ID: </th>" +
+            "<th style='border: 2px solid black'>Title:</th>" +
+            "<th style='width: 10%; border: 1px solid black'>Requested Date</th>" +
+            "<th style='width: 10%; border: 1px solid black'>Amount Requested</th>" +
+            "<th style='width: 10%; border: 1px solid black'>Reason for Reimbursement</th></tr>" +
+            "<th style='border: 1px solid black'>Comments</th></tr>" +
+            "<th style='width: 10%; border: 3px solid black'>Status</th></tr>";
+
+        for (let i = 0; i < array.length; i++) {
+            let request = array[i];
+            htmlElement.innerHTML += "<tr><td style='width: 5%; border: 1px solid black'>" + userID +
+                "</td><td style='width: 5%; border: 1px solid black'>" + request.requestID +
+                "</td><td style='border: 2px solid black'>" + request.title +
+                "</td><td style='width: 10%; border: 1px solid black'>" + request.requestDate +
+                "</td><td style='width: 10%; border: 1px solid black'>" + request.amtRequested +
+                "</td><td style='width: 10%; border: 1px solid black'>" + request.rsnforReimburse +
+                "</td><td style='border: 1px solid black'>" + request.cmtReimburse +
+                "</td><td style='width: 10%; border: 3px solid black'>" + request.status +
+                "</td></tr>";
+        }
+    }
+
+    async function viewRequestByID() {
+        let userID = sessionStorage.getItem("userID");
+        let requestID = document.getElementById("requestID").value;
+
+        let url = 'http://localhost:8080/Matthew-Dufner-P1/requests?user-id=' + userID + "&request-id=" + requestID;
+
+        let response = await fetch(url, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
@@ -24,16 +79,53 @@
 
         let array = response.json();
 
-        let htmlElement = document.getElementById(requestList);
+        let htmlElement = document.getElementById('RequestByID');
 
-        for (let i = 0; i < array.length; i++){
-            let request = array[i];
+        htmlElement.style.border = "2px solid white";
+        htmlElement.style.background = "#e200f2";
 
-            htmlElement.innerHTML += "<h4>Title: " + request.title + "</h4>";
-            htmlElement.innerHTML += "<p>Message: " + request.message + "</p>";
-            htmlElement.innerHTML += "<p>Completed: " + request.completed + "</p>";
-            htmlElement.innerHTML += "<p>Status: " + request.status + "</p><br><br>";
+        htmlElement.innerHTML = "<tr><th style='width: 5%; border: 1px solid black'>User ID: </th>" +
+            "<th style='width: 5%; border: 1px solid black'>Request ID: </th>" +
+            "<th style='border: 2px solid black'>Title:</th>" +
+            "<th style='width: 10%; border: 1px solid black'>Requested Date</th>" +
+            "<th style='width: 10%; border: 1px solid black'>Amount Requested</th>" +
+            "<th style='width: 10%; border: 1px solid black'>Reason for Reimbursement</th></tr>" +
+            "<th style='border: 1px solid black'>Comments</th></tr>" +
+            "<th style='width: 10%; border: 3px solid black'>Status</th></tr>";
+
+        if(request.title != null){
+            htmlElement.innerHTML += "<tr><td style='width: 5%; border: 1px solid black'>" + userID +
+                "</td><td style='width: 5%; border: 1px solid black'>" + request.requestID +
+                "</td><td style='border: 2px solid black'>" + request.title +
+                "</td><td style='width: 10%; border: 1px solid black'>" + request.requestDate +
+                "</td><td style='width: 10%; border: 1px solid black'>" + request.amtRequested +
+                "</td><td style='width: 10%; border: 1px solid black'>" + request.rsnforReimburse +
+                "</td><td style='border: 1px solid black'>" + request.cmtReimburse +
+                "</td><td style='width: 10%; border: 3px solid black'>" + request.status +
+                "</td></tr>";
+        }else{
+            alert("Request does not exist!");
         }
-}
+    }
+
+    async function clearAllSelection() {
+        let list = document.getElementById("requests");
+        list.style.border = "none";
+        list.innerHTML = "";
+    }
+
+    async function clearSelection() {
+        let request = document.getElementById("RequestByID");
+        request.style.border = "none";
+        request.innerHTML = "";
+    }
+
+    async function updateRequest() {
+        location.href = "file:///C:/Users/mattd/Documents/Revature/Matthew-Dufner-P1/Matthew-Dufner-P1/UI/User/UpdateRequest.html";
+    }
+
+    async function userOptions() {
+        location.href = "file:///C:/Users/mattd/Documents/Revature/Matthew-Dufner-P1/Matthew-Dufner-P1/UI/User/UserOptions.html";
+    }
 </script>
 </html>

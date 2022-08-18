@@ -15,6 +15,18 @@
 </body>
 
 <script>
+    let url = 'http://localhost:8080/Matthew-Dufner-P1/update?email=' + email;
+        let response = await fetch(url, {
+            method: 'GET',
+            headers:{
+                'Content-Type': 'application/json;charset=utf-8'
+            }
+            
+        })
+        let user = await response.json();
+
+        sessionStorage.setItem('userID', user.userID);
+
     async function updateUser() {
         location.href = "file:///C:/Users/mattd/Documents/Revature/Matthew-Dufner-P1/Matthew-Dufner-P1/UI/User/UpdateUser.html"
         

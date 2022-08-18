@@ -28,13 +28,24 @@ public class RequestServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+            String paramUID = req.getParameter("user-id");
+            String paramRID = req.getParameter("request-id");
             Integer userID = Integer.parseInt(req.getParameter("user-id"));
+            Integer requestID = Integer.parseInt(req.getParameter("request-id"));
 
-            List<Requests> requestsList = service.getAllRequests(userID);
+            if(paramRID == null || paramRID == ""){
+                List<Requests> requestsList = service.getAllRequests(userID);
 
-            String json = mapper.writeValueAsString(requestsList);
+                String json = mapper.writeValueAsString(requestsList);
 
-            resp.getWriter().println(json);
+                resp.getWriter().println(json);
+            }else{
+                Requests requests = service.getRequests(userID, requestID);
+                String json = mapper.writeValueAsString(requests);
+                resp.getWriter().println(json);
+            }
+
+
 
             resp.setContentType("Application/Json; Charset=UTF-8");
             resp.setStatus(200);
@@ -42,6 +53,9 @@ public class RequestServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+        Integer userID = Integer.parseInt(req.getParameter("user-id"));
+
+
         StringBuilder builder = new StringBuilder();
         BufferedReader buffer = req.getReader();
 
@@ -52,8 +66,7 @@ public class RequestServlet extends HttpServlet {
         String json = builder.toString();
         Requests requests = mapper.readValue(json, Requests.class);
 
-        service.saveRequests(requests);
-        resp.getWriter().println("Request created.");
+        service.saveRequests(requests, userID);
         resp.setContentType("Application/Json; Charset=UTF-8");
         resp.setStatus(200);
     }

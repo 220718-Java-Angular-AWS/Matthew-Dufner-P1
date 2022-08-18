@@ -41,6 +41,9 @@ public class UserOptions implements DatabaseCRUD<User>{
             e.printStackTrace();
         }
     }
+    @Override
+    public void create(User user,int requestID){
+    }
 
     @Override
     public User read(int id) {
@@ -67,6 +70,30 @@ public class UserOptions implements DatabaseCRUD<User>{
         return user;
     }
 
+    @Override
+    public User read(int requestID, int userID){
+        User user = new User();
+
+        try{
+            String sql = "SELECT * FROM users WHERE user_id = ?";
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            pstmt.setInt(1, userID);
+            ResultSet results = pstmt.executeQuery();
+
+
+            if(results.next()){
+                user.setUserID(results.getInt("user_id"));
+                user.setFirstName(results.getString("first_name"));
+                user.setLastName(results.getString("last_name"));
+                user.setUserPass(results.getString("user_pass"));
+                user.setUserAdmin(results.getBoolean("user_admin"));
+                user.setEmail(results.getString("email"));
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return user;
+    }
     @Override
     public List<User> readAll() {
         List<User> userList = new LinkedList<>();

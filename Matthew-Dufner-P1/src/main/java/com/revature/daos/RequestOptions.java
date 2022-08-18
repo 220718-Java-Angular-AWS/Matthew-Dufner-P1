@@ -47,14 +47,68 @@ public class RequestOptions implements DatabaseCRUD<Requests> {
     }
 
     @Override
-    public Requests read(int id) {
+    public void create(Requests request, int userID){
+
+        try{
+            String sql = "INSERT INTO requests (request_fk, title, request_date, amount_requested, reason_for_reimbursement, reimbursement_comments, " +
+                    "approve_deny) VALUES (?, ?, ?, ?, ?, ?, Pending)" ;
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+
+            pstmt.setInt(1, userID);
+            pstmt.setString(2, request.getTitle());
+            pstmt.setString(3, request.getRequestDate());
+            pstmt.setDouble(4, request.getAmtRequested());
+            pstmt.setString(5, request.getRsnforReimburse());
+            pstmt.setString(6, request.getCmtReimburse());
+            pstmt.setString(7, request.getStatus());
+
+            pstmt.executeUpdate();
+
+
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public Requests read(int requestID) {
         Requests requests = new Requests();
         User user = new User();
 
         try{
             String sql = "SELECT * FROM requests WHERE request_id = ?";
             PreparedStatement pstmt = connection.prepareStatement(sql);
-            pstmt.setInt(1, id);
+            pstmt.setInt(1, requestID);;
+            ResultSet results = pstmt.executeQuery();
+
+
+
+            if(results.next()){
+                user.setUserID(results.getInt("user_id"));
+                requests.setRequestID(results.getInt("request_id"));
+                requests.setRequestID(results.getInt("title"));
+                requests.setRequestID(results.getInt("request_date"));
+                requests.setAmtRequested(results.getDouble("amount_requested"));
+                requests.setRsnforReimburse(results.getString("reason_for_reimbursement"));
+                requests.setCmtReimburse(results.getString("reimbursement_comments"));
+                requests.setStatus(results.getString("status"));
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return requests;
+    }
+
+    @Override
+    public Requests read(int requestID, int userID) {
+        Requests requests = new Requests();
+        User user = new User();
+
+        try{
+            String sql = "SELECT * FROM requests WHERE request_id = ? AND request_pk = ?";
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            pstmt.setInt(1, requestID);
+            pstmt.setInt(2, userID);
             ResultSet results = pstmt.executeQuery();
 
 

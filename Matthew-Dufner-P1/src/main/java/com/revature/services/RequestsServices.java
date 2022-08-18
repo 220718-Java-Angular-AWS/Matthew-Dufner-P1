@@ -13,12 +13,19 @@ public class RequestsServices {
         this.ROpts = new RequestOptions();
     }
 
+    public void saveRequests(Requests requests, int userID){
+        ROpts.create(requests, userID);
+    }
+
     public void saveRequests(Requests requests){
         ROpts.create(requests);
     }
 
-    public Requests getRequests(int id){
-        return ROpts.read(id);
+    public Requests getRequests(int requestID,int userID){
+        return ROpts.read(requestID, userID);
+    }
+    public Requests getRequests(int requestID){
+        return ROpts.read(requestID);
     }
 
     public List<Requests> getAllRequests(int id){

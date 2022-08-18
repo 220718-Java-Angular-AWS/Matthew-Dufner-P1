@@ -48,9 +48,9 @@
     <button type="button" onclick="Approve()" id="Aprv"> Approve</button>
     <button id="Deny" onclick="Deny()" id="Deny"> Deny</button>
     <div id="dropdown" class="dropdown">
-        <button type= "button" onclick = 'show_hide()' class='button'> Select Request </button>
-            <div id='listItems'>
+        <div id='listItems'>
         </div>
+    <div id = "requestList"></div>
 </body>
 
 <script>
@@ -81,12 +81,18 @@
         });
 
         var array = response.json();
-        let dropDown = document.getElementsByClassName('dropdown');
-        let listItems = document.getElementById('listItems');
-        for(var i = 0; i < array.length; i++){
-            let request = array[i];
-            listItems.innerHTML += "<a href='listItems'> " + request.title + " </a>";
-        }
+
+        let htmlElement = document.getElementById('requestList');
+
+        const darDiv = document.getElementById("dropdown");
+        const btn = document.createElement("button");
+
+        btn.innerHTML = "Select Request";
+        btn.id = "allRequests";
+        btn.class ="dropdown"
+        btn.onclick = show_hide();
+
+        darDiv.appendChild(btn);
         
         // if (array != 0) {
         //     for (let i = 0; i < array.length; i++) {
@@ -126,13 +132,50 @@
 
     //     darDiv.appendChild(btn);
     // }
-    function show_hide() {
+    async function show_hide() {
+        email = document.getElementById("email").value;
+
+        if (email.length == 0) {
+            alert("Field \"Email\" cannot be empty");
+            throw "Field cannot be empty!"
+        }
+
+        let url = 'http://localhost:8080/Matthew-Dufner-P1/emailLookup?email=' + email;
+        let response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            }
+
+        })
+        let user = await response.json();
+
+        url = 'http://localhost:8080/Matthew-Dufner-P1/requests?user-id=' + user.userID;
+        response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            }
+        });
+
+        var array = response.json();
+
+        let htmlElement = document.getElementById("requestList");
+        
         var click = document.getElementById('listItems');
+
         if (click.style.display === "none") {
             click.style.display = "block";
         } else {
             click.style.display = "none";
+        };
+
+        for(let i = 0; i < array.length; i++){
+            let request = array.item(i);
+            htmlElement.innerHTML = "<p> " + request.requestDate + " </p>";
+            consol.log(request.requestDate);
         }
+        
     }
 
 </script>
