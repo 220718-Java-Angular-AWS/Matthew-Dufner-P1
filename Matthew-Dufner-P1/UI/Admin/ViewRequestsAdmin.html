@@ -81,7 +81,7 @@
             }
         });
 
-        var array = response.json();
+        var array = await response.json();
 
         let htmlElement = document.getElementById('requestList');
 
@@ -159,7 +159,7 @@
             }
         });
 
-        var array = response.json();
+        var array = await response.json();
 
         let htmlElement = document.getElementById("requestList");
         
@@ -173,7 +173,7 @@
 
         for(let i = 0; i < array.length; i++){
             let request = array.item(i);
-            htmlElement.innerHTML = "<p> " + request.requestDate + " </p>";
+            htmlElement.innerHTML = "<p href='#'> " + request.requestDate + " </p>";
             consol.log(request.requestDate);
         }
         

@@ -24,8 +24,8 @@ public class RequestsServices {
         ROpts.update(requests);
     }
 
-    public Requests getRequests(int requestID,int userID){
-        return ROpts.read(requestID, userID);
+    public Requests getRequests(int requestID,int requestFK){
+        return ROpts.read(requestID, requestFK);
     }
     public Requests getRequests(int requestID){
         return ROpts.read(requestID);

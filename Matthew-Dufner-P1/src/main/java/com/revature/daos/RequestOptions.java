@@ -85,6 +85,7 @@ public class RequestOptions implements DatabaseCRUD<Requests> {
 
             if(results.next()){
                 requests.setRequestID(results.getInt("request_id"));
+                requests.setRequestFK(results.getInt("request_fk"));
                 requests.setTitle(results.getString("title"));
                 requests.setRequestDate(results.getString("request_date"));
                 requests.setAmtRequested(results.getDouble("amount_requested"));
@@ -113,8 +114,8 @@ public class RequestOptions implements DatabaseCRUD<Requests> {
 
 
             if(results.next()){
-                user.setUserID(results.getInt("user_id"));
                 requests.setRequestID(results.getInt("request_id"));
+                requests.setRequestFK(results.getInt("request_fk"));
                 requests.setTitle(results.getString("title"));
                 requests.setRequestDate(results.getString("request_date"));
                 requests.setAmtRequested(results.getDouble("amount_requested"));
@@ -141,6 +142,7 @@ public class RequestOptions implements DatabaseCRUD<Requests> {
 
             while(results.next()){
                 requests.setRequestID(results.getInt("request_id"));
+                requests.setRequestFK(results.getInt("request_fk"));
                 requests.setTitle(results.getString("title"));
                 requests.setRequestDate(results.getString("request_date"));
                 requests.setAmtRequested(results.getDouble("amount_requested"));

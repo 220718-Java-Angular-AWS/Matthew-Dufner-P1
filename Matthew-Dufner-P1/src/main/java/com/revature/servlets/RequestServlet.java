@@ -61,19 +61,10 @@ public class RequestServlet extends HttpServlet {
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
         StringBuilder builder = new StringBuilder();
         BufferedReader buffer = req.getReader();
-        String param = req.getParameter("status");
         String paramRID = req.getParameter("request-id");
-        String paramUID = req.getParameter("user-id");
 
-
-        if(paramRID == null){
-            resp.getWriter().println("Request ID not found.");
-        } else if (paramUID == null){
-            resp.getWriter().println("User ID not found.");
-        }else {
-            Integer userID = Integer.parseInt(req.getParameter("user-id"));
-            Integer requestId = Integer.parseInt(req.getParameter("request-id"));
-            Requests requests = service.getRequests(requestId, userID);
+        Integer requestId = Integer.parseInt(req.getParameter("request-id"));
+        Requests requests = service.getRequests(requestId);
 
             while (buffer.ready()) {
                 builder.append(buffer.readLine());
@@ -83,7 +74,7 @@ public class RequestServlet extends HttpServlet {
             requests = mapper.readValue(json, Requests.class);
             service.updateRequests(requests);
             resp.getWriter().println("Request updated.");
-        }
+
         resp.setContentType("Application/Json; Charset=UTF-8");
         resp.setStatus(200);
     }

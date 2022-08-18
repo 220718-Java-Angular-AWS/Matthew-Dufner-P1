@@ -22,7 +22,9 @@
         <button type="button" onclick="clearAllSelection()">Clear All Selections</button>
     </form>
     <br>
+    <h1 id="viewRequestHeader"></h1>
     <table style="width: 90%" id="RequestByID"></table><br><br>
+    <h1 id="requestsHeader"></h1>
     <table style="width: 90%" id="requests"></table>
     <div id="AdminMenu"></div>
 </body>
@@ -32,8 +34,8 @@
             let darDiv = document.getElementById("AdminMenu");
             let btn = document.createElement("button");
 
-            darDiv.innerHTML += "<button type='button' id='Approve' onclick='Approve()'>Approve</button>";
-            darDiv.innerHTML += "<button type='button' id='Deny' onclick='Deny()'>Deny</button>";
+            darDiv.innerHTML += "<button type='button' id='Approve' onclick='Approve(), clearSelection(), viewRequestByID()'>Approve</button>";
+            darDiv.innerHTML += "<button type='button' id='Deny' onclick='Deny(), clearSelection(), viewRequestByID()'>Deny</button>";
         }
     })();
     async function getRequestsForUser() {
@@ -89,12 +91,22 @@
 
         });
 
-        let request = response.json();
-        console.log(request);
+        let request = await response.json();
         let htmlElement = document.getElementById('RequestByID');
+        let titleHeader = document.getElementById('viewRequestHeader');
 
+        localStorage.getItem("requestID");
+        localStorage.setItem("requestID", request.requestID);
+        
+        titleHeader.style.textAlign = 'center';
+        titleHeader.innerHTML= "Request from RID"
+        
         htmlElement.style.border = "2px solid white";
         htmlElement.style.background = "#e200f2";
+        
+        console.log(request.title);
+
+        
 
         htmlElement.innerHTML = "<tr><th style='width: 5%; border: 1px solid black'>User ID: </th>" +
             "<th style='width: 5%; border: 1px solid black'>Request ID: </th>" +
@@ -105,8 +117,11 @@
             "<th style='border: 1px solid black'>Comments</th></tr>" +
             "<th style='width: 10%; border: 3px solid black'>Status</th></tr>"
 
-        if(request.title != null){
-            htmlElement.innerHTML += "<tr><td style='width: 5%; border: 1px solid black'>" + userID +
+        if(request.title == null){
+            alert("Request does not exist!");
+            
+        }else{
+            htmlElement.innerHTML += "<tr><td style='width: 5%; border: 1px solid black'>" + request.requestFK +
                 "</td><td style='width: 5%; border: 1px solid black'>" + request.requestID +
                 "</td><td style='border: 2px solid black'>" + request.title +
                 "</td><td style='width: 10%; border: 1px solid black'>" + request.requestDate +
@@ -115,9 +130,12 @@
                 "</td><td style='border: 1px solid black'>" + request.cmtReimburse +
                 "</td><td style='width: 10%; border: 3px solid black'>" + request.status +
                 "</td></tr>"
-        }else{
-            alert("Request does not exist!");
         }
+        
+        
+
+
+        console.log(request);
     }
 
     async function clearAllSelection() {
@@ -133,7 +151,7 @@
     }
 
     async function Approve(){
-        let requestID = document.getElementById("requestID").value;
+        let requestID = localStorage.getItem("requestID").value;
 
         let url = 'http://localhost:8080/Matthew-Dufner-P1/requests?request-id=' + requestID;
 
@@ -144,10 +162,21 @@
             }
         });
 
-        let request = response.json();
+        let array = await response.json();
 
-        request.status = "Approved";
+        let request ={
+            requestFk: array.requestFK,
+            requestID: array.requestID,
+            title: array.title,
+            requestDate: array.requestDate,
+            amtRequested: array.amtRequested,
+            rsnforReimburse: array.rsnforReimburse,
+            cmtReimburse: array.cmtReimburse,
+            status: "Approved"
+        } 
         
+        console.log(request);
+
         url = 'http://localhost:8080/Matthew-Dufner-P1/requests?request-id=' + requestID;
 
         response = await fetch(url, {
@@ -159,7 +188,39 @@
         });
     }
     async function Deny(){
+        let requestID = document.getElementById('requestID').value;
 
+        let url = 'http://localhost:8080/Matthew-Dufner-P1/requests?request-id=' + requestID;
+
+        let response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            }
+        });
+
+        let array = await response.json();
+
+        let request ={
+            requestFk: array.requestFK,
+            requestID: array.requestID,
+            title: array.title,
+            requestDate: array.requestDate,
+            amtRequested: array.amtRequested,
+            rsnforReimburse: array.rsnforReimburse,
+            cmtReimburse: array.cmtReimburse,
+            status: "Denied"
+        } 
+        
+        url = 'http://localhost:8080/Matthew-Dufner-P1/requests?request-id=' + requestID;
+
+        response = await fetch(url, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify(request)
+        });
     }
     async function updateRequest() {
         location.href = "file:///C:/Users/mattd/Documents/Revature/Matthew-Dufner-P1/Matthew-Dufner-P1/UI/User/UpdateRequest.html";

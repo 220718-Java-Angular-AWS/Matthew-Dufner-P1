@@ -2,6 +2,7 @@ package com.revature.pojos;
 
 public class Requests extends User{
     private Integer requestID;
+    private Integer requestFK;
     private String title;
     private String requestDate;
     private Double amtRequested;
@@ -12,8 +13,9 @@ public class Requests extends User{
     public Requests() {
     }
 
-    public Requests(Integer requestID, String title, String requestDate, Integer requestId, Double amtRequested, String rsnforReimburse, String cmtReimburse, String status) {
+    public Requests(Integer requestID, Integer requestFK, String title, String requestDate, Integer requestId, Double amtRequested, String rsnforReimburse, String cmtReimburse, String status) {
         this.requestID = requestID;
+        this.requestFK = requestFK;
         this.title = title;
         this.requestDate = requestDate;
         this.amtRequested = amtRequested;
@@ -22,8 +24,9 @@ public class Requests extends User{
         this.status = status;
     }
 
-    public Requests(String requestID, String title, String requestDate, String requestId, Double amtRequested, String rsnforReimburse, String cmtReimburse, String status) {
+    public Requests(String requestID, String requestFK, String title, String requestDate, String requestId, Double amtRequested, String rsnforReimburse, String cmtReimburse, String status) {
         this.requestID = null;
+        this.requestFK = null;
         this.title = title;
         this.requestDate = requestDate;
         this.amtRequested = amtRequested;
@@ -51,6 +54,13 @@ public class Requests extends User{
 
     public void setRequestID(Integer requestID){
         this.requestID = requestID;
+    }
+    public int getRequestFK(){
+        return requestFK;
+    }
+
+    public void setRequestFK(Integer requestFK){
+        this.requestFK = requestFK;
     }
     public String getTitle() {
         return title;
